@@ -1,0 +1,26 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '10mb'
+        }
+    },
+    images: {
+        remotePatterns:[
+            {
+              protocol : 'https',
+              hostname : 'lh3.googleusercontent.com',
+              pathname : '**', 
+            },
+            {
+              protocol : 'https',
+              hostname : 'res.cloudinary.com',
+              pathname : '**', 
+
+            }
+        ]
+    }
+};
+
+export default nextConfig;

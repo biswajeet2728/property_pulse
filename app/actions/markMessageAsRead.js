@@ -1,0 +1,36 @@
+'use server';
+import connectDB from '@/config/db_config';
+import Message from '@/models/Message';
+import { get_server_session } from '@/util/serverSession';
+import { revalidatePath } from 'next/cache';
+
+async function markMessageAsRead(messageId) {
+  await connectDB();
+
+  const sessionUser = await get_server_session();
+
+  if (!sessionUser || !sessionUser.user) {
+    throw new Error('User ID is required');
+  }
+
+  const { userId } = sessionUser;
+
+  const message = await Message.findById(messageId);
+
+  if (!message) throw new Error('Message not found');
+
+  // Verify ownership
+  if (message.recipient.toString() !== userId) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  message.read = !message.read;
+
+  revalidatePath('/messages', 'page');
+
+  await message.save();
+
+  return message.read;
+}
+
+export default markMessageAsRead;
