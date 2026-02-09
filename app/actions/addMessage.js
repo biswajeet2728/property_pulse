@@ -18,7 +18,7 @@ async function addMessage(previousState, formData) {
 
   const { userId } = sessionUser;
 
-  const recipient = formData.get('recipient');
+  const { recipient, property, name, email, phone, body } = formData;
 
   if (userId === recipient) {
     return { error: 'You can not send a message to yourself' };
@@ -29,15 +29,15 @@ async function addMessage(previousState, formData) {
     recipient,
     property: formData.get('property'),
   });
-  
+
   const newMessage = new Message({
     sender: userId,
     recipient,
-    property: formData.get('property'),
-    name: formData.get('name'),
-    email: formData.get('email'),
-    phone: formData.get('phone'),
-    body: formData.get('body'),
+    property,
+    name,
+    email,
+    phone,
+    body,
   });
 
   await newMessage.save();
