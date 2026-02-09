@@ -1,7 +1,7 @@
 'use client';
-import { useEffect } from 'react';
-import { useFormStatus } from 'react-dom';
-import { useActionState } from "react";
+import { useEffect, useState } from 'react';
+// import { useFormStatus } from 'react-dom';
+// import { useActionState } from "react";
 import { useSession } from 'next-auth/react';
 // import { toast } from 'react-toastify';
 import addMessage from '@/app/actions/addMessage';
@@ -10,7 +10,7 @@ import SubmitMessageButton from './SubmitMessageButton';
 const PropertyContactForm = ({ property }) => {
     const { data: session } = useSession();
 
-    const [state, formAction] = useActionState(addMessage, {});
+    const [state, setState] = useState({ submitted: false, error: null });
 
     useEffect(() => {
         if (state.error) alert(state.error);
