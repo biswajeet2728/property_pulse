@@ -24,12 +24,6 @@ async function addMessage(previousState, formData) {
     return { error: 'You can not send a message to yourself' };
   }
 
-
-  console.log({
-    recipient,
-    property: formData.get('property'),
-  });
-
   const newMessage = new Message({
     sender: userId,
     recipient,
